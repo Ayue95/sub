@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>◌Sub</title>
+<link rel="icon" href="assets/favicon.ico?v=1" sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v=1" />
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png?v=1" />
+<link rel="apple-touch-icon" href="assets/apple-180.png?v=1" />
+<link rel="stylesheet" href="css/style.css?v=48" />
+</head>
+<body class="is-cover">
+
+<div id="boot" class="boot">
+  <div class="boot-inner">
+    <img src="assets/pinguinni/work.png" alt="" class="boot-penguin" />
+    <div class="boot-title">正在准备运行环境</div>
+    <div class="boot-bar"><div id="bootFill" class="boot-fill"></div></div>
+    <div id="bootMsg" class="boot-msg">初始化…</div>
+  </div>
+</div>
+
+<script>
+  // file:// 无法加载模块和运行环境，保留可操作的错误提示。
+  if (location.protocol === "file:") {
+    var bootBox = document.querySelector(".boot-inner");
+    if (bootBox) {
+      bootBox.innerHTML =
+        '<img src="assets/pinguinni/confused.png" alt="" class="boot-penguin" />' +
+        '<div class="boot-title">这样打不开，需要本地服务</div>' +
+        '<div class="boot-help">双击文件夹里的 <b>一键启动.bat</b>，<br />浏览器会自动打开正确的地址。</div>';
+    }
+  }
+</script>
+
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 48 48" width="23" height="23">
+          <defs>
+            <radialGradient id="brandJelly" cx="36%" cy="30%" r="72%">
+              <stop offset="0%" stop-color="#ffd9e7" />
+              <stop offset="62%" stop-color="#f0a9c6" />
+              <stop offset="100%" stop-color="#dd92b3" />
+            </radialGradient>
+          </defs>
+          <circle cx="24" cy="25" r="16.5" fill="url(#brandJelly)" />
+          <ellipse cx="18.4" cy="19.4" rx="5" ry="3.4" fill="#ffffff" opacity="0.62" transform="rotate(-24 18.4 19.4)" />
+          <path d="M24 9.6c1.5-3.6 4.6-5 7.4-4.4-1 2.9-3.6 4.9-7.4 4.4Z" fill="#8fbf5a" />
+        </svg>
+      </span>
+      <span class="brand-text">Sub</span>
+    </div>
+    <nav class="nav" id="tabs">
+      <button class="nav-item is-active" data-page="home">首页</button>
+      <button class="nav-item" data-page="project">一键立项</button>
+      <button class="nav-item" data-page="precheck">原剧体检</button>
+      <button class="nav-item" data-page="localize">ST ↔ TT</button>
+      <button class="nav-item" data-page="repair">SRT 修复</button>
+      <button class="nav-item is-hidden" data-page="compare">对比工具</button>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="ambient" aria-hidden="true">
+      <img src="assets/pinguinni/work.png" alt="" />
+      <img src="assets/pinguinni/laugh.png" alt="" />
+    </div>
+    <div class="main-inner">
+      <section class="page is-active" id="page-home">
+        <div class="hero">
+          <h1 class="hero-title"><span class="dashed" aria-hidden="true"></span>Sub</h1>
+          <div class="hero-penguins">
+            <img src="assets/pinguinni/work.png" alt="查资料" />
+            <img src="assets/pinguinni/wink.png" alt="心领神会" />
+            <img src="assets/pinguinni/laugh.png" alt="开心" />
+            <img src="assets/pinguinni/confused.png" alt="疑惑" />
+            <img src="assets/pinguinni/love.png" alt="比心" />
+          </div>
+          <button class="enter-btn" id="enterApp" type="button" aria-label="进入工具" title="进入工具">
+            <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
+              <path d="M13.4 1.6 3.8 13.2c-.4.5 0 1.3.6 1.3h5.3l-1.4 7.4c-.1.7.7 1.1 1.2.6l9.6-11.6c.4-.5 0-1.3-.6-1.3h-5.3l1.4-7.4c.1-.7-.7-1.1-1.2-.6Z" fill="currentColor"/>
+            </svg>
+          </button>
+        </div>
+      </section>
+
+      <section class="page" id="page-repair">
+        <div class="page-head">
+          <h2>SRT 修复</h2>
+          <p>选择译后字幕 → 修复时间轴、编码、行尾与语言混杂</p>
+        </div>
+        <div class="page-body">
+        <div class="card drop is-center" id="dropZone">
+          <div class="drop-hint" id="fileInfo"></div>
+          <div class="row">
+            <button class="btn ghost" id="pickFiles">选择字幕文件</button>
+            <button class="btn ghost" id="pickFolder">选择字幕文件夹</button>
+            <button class="btn text" id="clearFiles" hidden>清空</button>
+          </div>
+        </div>
+        <div class="card is-center">
+          <div class="language-options" id="langChips" role="radiogroup" aria-label="目标语言"></div>
+        </div>
+        <div class="row actions is-center">
+          <button class="btn primary" id="runRepair" disabled>开始修复</button>
+        </div>
+        <div class="card log-card is-center" hidden>
+          <div class="log" id="repairLog" role="log" aria-label="修复日志"></div>
+        </div>
+        <div class="card result-card" id="repairResult" hidden>
+          <div id="resultSummary" class="summary"></div>
+          <div class="row" id="resultActions"></div>
+        </div>
+        </div>
+      </section>
+
+      <section class="page" id="page-precheck">
+        <div class="page-head">
+          <h2>原剧体检</h2>
+          <p>选择原剧 → 查出缺集、空集、重复集与命名不规范集，显示全部集帧率</p>
+        </div>
+        <div class="page-body">
+        <div class="card drop is-center" id="preDrop">
+          <div class="drop-hint" id="preInfo"></div>
+          <div class="row">
+            <button class="btn ghost" id="prePickFiles">选择视频文件</button>
+            <button class="btn ghost" id="prePickFolder">选择视频文件夹</button>
+            <button class="btn text" id="preClear" hidden>清空</button>
+          </div>
+        </div>
+
+        <div class="run-bar">
+          <button class="btn primary" id="runPrecheck" disabled>开始体检</button>
+          <span class="run-note" id="preNote"></span>
+        </div>
+
+        <div id="preWorkspace" hidden>
+          <div class="pre-verdict" id="preVerdict"></div>
+          <div class="pre-issues" id="preIssues"></div>
+
+          <div class="card">
+            <div class="card-label">每集参数</div>
+            <div class="pre-table-wrap">
+              <table class="pre-table">
+                <thead>
+                  <tr>
+                    <th>集</th><th>文件名</th><th>大小</th><th>分辨率</th><th>帧率</th><th>时长</th><th>状态</th>
+                  </tr>
+                </thead>
+                <tbody id="preRows"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="replace-bar">
+            <span class="muted" id="preStats"></span>
+            <button class="btn ghost" id="preSaveReport">保存体检报告</button>
+          </div>
+        </div>
+        </div>
+      </section>
+
+      <section class="page" id="page-localize">
+        <div class="page-head">
+          <h2>ST ↔ TT</h2>
+          <p>选择本地化清单与译前字幕 → 一键替换术语并自检</p>
+        </div>
+        <div class="page-body">
+        <div class="card drop is-center" id="locExcelDrop">
+          <div class="drop-hint" id="excelInfo"></div>
+          <div class="row">
+            <button class="btn ghost" id="pickExcel">选择本地化清单</button>
+            <button class="btn text" id="clearExcel" hidden>清除</button>
+          </div>
+        </div>
+
+        <div class="card drop is-center" id="locDrop">
+          <div class="drop-hint" id="locFileInfo"></div>
+          <div class="row">
+            <button class="btn ghost" id="locPickFiles">选择字幕文件</button>
+            <button class="btn ghost" id="locPickFolder">选择字幕文件夹</button>
+            <button class="btn text" id="locClear" hidden>清空</button>
+          </div>
+        </div>
+
+        <div class="run-bar">
+          <button class="btn primary" id="runScan" disabled>加载并扫描</button>
+          <span class="run-note" id="scanNote"></span>
+        </div>
+
+        <div id="locWorkspace" hidden>
+          <div class="split">
+            <div class="card term-card">
+              <div class="card-label">术语列表</div>
+              <div class="term-list" id="termList"></div>
+            </div>
+            <div class="card match-card">
+              <div class="match-head">
+                <div class="card-label" id="matchTitle">匹配预览</div>
+                <label class="check-line">
+                  <input type="checkbox" id="selectAll" />
+                  <span>全选当前术语的所有匹配</span>
+                </label>
+              </div>
+              <div class="match-sub" id="matchSub"></div>
+              <div class="match-list" id="matchList"></div>
+            </div>
+          </div>
+          <div class="replace-bar">
+            <span class="muted" id="locStats"></span>
+            <button class="btn primary" id="applyReplace">应用替换</button>
+          </div>
+          <div class="card result-card" id="locResult" hidden>
+            <div id="locResultSummary" class="summary"></div>
+            <div class="row" id="locResultActions"></div>
+          </div>
+
+          <div class="card audit-card" id="locAudit" hidden>
+            <div class="audit-head">
+              <div class="card-label">术语巡检</div>
+              <span class="audit-sum" id="auditSum"></span>
+            </div>
+            <div id="auditBody"></div>
+          </div>
+        </div>
+
+        <div class="log-strip" id="locLog" role="log" aria-label="替换日志" hidden></div>
+        </div>
+      </section>
+
+      <section class="page" id="page-compare">
+        <div class="two-col">
+          <div class="card drop" id="cmpDropA">
+            <div class="card-label">手动版字幕</div>
+            <div class="drop-hint" id="cmpInfoA"></div>
+            <div class="row">
+              <button class="btn ghost" id="cmpPickA">选择文件</button>
+              <button class="btn ghost" id="cmpPickAFolder">选择文件夹</button>
+              <button class="btn text" id="cmpClearA" hidden>清空</button>
+            </div>
+          </div>
+          <div class="card drop" id="cmpDropB">
+            <div class="card-label">网站版字幕</div>
+            <div class="drop-hint" id="cmpInfoB"></div>
+            <div class="row">
+              <button class="btn ghost" id="cmpPickB">选择文件</button>
+              <button class="btn ghost" id="cmpPickBFolder">选择文件夹</button>
+              <button class="btn text" id="cmpClearB" hidden>清空</button>
+            </div>
+          </div>
+        </div>
+        <div class="row actions">
+          <button class="btn primary" id="runCompare" disabled>开始对比</button>
+          <span class="muted" id="cmpHint"></span>
+        </div>
+        <div class="card log-card" hidden>
+          <div class="log" id="cmpLog" role="log" aria-label="对比日志"></div>
+        </div>
+        <div id="cmpResult" hidden>
+          <div class="card">
+            <div class="card-label">差异概览</div>
+            <div id="cmpSummary" class="summary"></div>
+            <div class="row" id="cmpActions"></div>
+          </div>
+          <div class="card">
+            <div class="card-label" id="cmpDetailTitle">差异明细</div>
+            <div class="diff-list" id="cmpDiffList"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="page-project">
+        <div class="page-head">
+          <h2>一键立项</h2>
+          <p>选择位置，填写剧ID + 剧名 → 一键生成标准的本地化多层级文件夹</p>
+        </div>
+        <div class="page-body">
+        <div class="card is-center" id="projDirectoryCard">
+          <div class="drop-hint">项目位置</div>
+          <div class="row">
+            <button class="btn ghost" id="projPickDir">选择项目文件夹</button>
+            <span class="muted" id="projDirInfo"></span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="field">
+            <input type="text" id="projName" placeholder="ID / 剧名" aria-label="ID / 剧名" autocomplete="off" />
+          </div>
+          <div class="language-rows">
+            <div class="language-row">
+              <span class="language-label" id="projSrcLabel">源语言</span>
+              <div class="language-options" id="projSrc" role="radiogroup" aria-labelledby="projSrcLabel"></div>
+            </div>
+            <div class="language-row">
+              <span class="language-label" id="projDstLabel">目标语言</span>
+              <div class="language-options" id="projDst" role="radiogroup" aria-labelledby="projDstLabel"></div>
+            </div>
+          </div>
+        </div>
+        <div class="row actions is-center">
+          <button class="btn primary" id="runProject">一键生成标准目录</button>
+        </div>
+        <div class="card log-card is-center" hidden>
+          <div class="log" id="projLog" role="log" aria-label="立项日志"></div>
+        </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<input type="file" id="filePicker" accept=".srt" multiple hidden />
+<input type="file" id="folderPicker" webkitdirectory directory multiple hidden />
+<input type="file" id="preFilePicker" accept=".mp4,.mov,.m4v,.mkv,.avi" multiple hidden />
+<input type="file" id="preFolderPicker" webkitdirectory directory multiple hidden />
+<input type="file" id="excelPicker" accept=".xlsx,.xls" hidden />
+<input type="file" id="locFilePicker" accept=".srt" multiple hidden />
+<input type="file" id="locFolderPicker" webkitdirectory directory multiple hidden />
+<input type="file" id="cmpPickerA" accept=".srt" multiple hidden />
+<input type="file" id="cmpFolderA" webkitdirectory directory multiple hidden />
+<input type="file" id="cmpPickerB" accept=".srt" multiple hidden />
+<input type="file" id="cmpFolderB" webkitdirectory directory multiple hidden />
+
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<script type="module" src="js/app.js?v=19"></script>
+</body>
+</html>
