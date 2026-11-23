@@ -31,14 +31,14 @@ function connect(u){return new Promise((res,rej)=>{const ws=new WebSocket(u);ws.
     console.log("=== 页面标题 ===", await cdp.eval("document.title"));
     console.log("=== 首页可见 ===", await cdp.eval("!!document.getElementById('page-home')"));
 
-    // 等 Python 运行时
-    let badge = "";
-    for (let i=0;i<40;i++){
-      badge = await cdp.eval("(function(){var b=document.getElementById('pyBadge');return b?b.textContent:'';})()");
-      if (badge && badge.indexOf("就绪")>=0) break;
+    // 等启动遮罩消失（说明 Python 运行时已就绪）
+    let booted = false;
+    for (let i=0;i<60;i++){
+      const gone = await cdp.eval("(function(){var b=document.getElementById('boot');return !b || b.hidden || getComputedStyle(b).display==='none' || getComputedStyle(b).opacity==='0';})()");
+      if (gone) { booted = true; break; }
       await sleep(1500);
     }
-    console.log("=== 运行时状态 ===", JSON.stringify(badge));
+    console.log("=== Python 运行时就绪 ===", booted);
 
     // 切到四个功能页看是否渲染
     for (const page of ["project","precheck","localize","repair"]) {

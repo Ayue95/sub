@@ -36,6 +36,10 @@
 - 字幕处理：[pysubs2](https://github.com/tkarabela/pysubs2)
 - 视频参数解析：直接读取 MP4/MOV 的 box 结构，不依赖 ffmpeg
 
+## 开发验证
+
+`_dev/` 目录下是改动后用来「自动跑一遍确认没弄坏」的脚本（无头 Chrome + CDP），**线上网站不需要它们**。运行方式见 `_dev/README.md`。
+
 ## 版权声明
 
 Copyright © 2026. All rights reserved.
