@@ -301,17 +301,7 @@ async function boot() {
   initPrecheck();
 
   try {
-    const info = await bridge.init();
-    const badge = el("envBadge");
-    if (badge) {
-      const hasSubs = !!(info.packages && info.packages.pysubs2);
-      badge.textContent = (hasSubs ? "✓ 就绪 · " : "⚠ 文本模式 · ") + info.python;
-      badge.classList.add(hasSubs ? "ok" : "warn");
-      badge.title =
-        "Python " + info.python +
-        " · pysubs2: " + (hasSubs ? "已安装" : "未安装") +
-        " · openpyxl: " + (info.openpyxl || "未安装");
-    }
+    await bridge.init();
     hideBoot();
   } catch (err) {
     el("bootMsg").textContent = "环境加载失败：" + String((err && err.message) || err);

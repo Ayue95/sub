@@ -117,44 +117,6 @@ body {
 
 .nav-item.is-hidden { display: none; }
 
-.nav-ico {
-  width: 18px;
-  font-size: 14px;
-  text-align: center;
-  flex-shrink: 0;
-  line-height: 1;
-}
-
-.sidebar-foot {
-  margin-top: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 0 4px;
-}
-
-.env {
-  font-size: 11px;
-  color: var(--text-3);
-  padding: 5px 9px;
-  border-radius: 999px;
-  background: #fff;
-  border: 1px solid var(--border);
-  text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.env.ok { color: var(--ok); border-color: #d8ecdf; background: #f4fbf6; }
-.env.warn { color: var(--warn); border-color: #f6e6cb; background: #fdf9f1; }
-
-.ver {
-  font-size: 10.5px;
-  color: #b9b0b5;
-  text-align: center;
-}
-
 .main {
   min-width: 0;
   background:
@@ -262,8 +224,6 @@ body.is-cover .main-inner {
   padding: 0;
 }
 
-body.is-cover .footer { display: none; }
-
 #page-home.is-active {
   display: flex;
   flex-direction: column;
@@ -327,13 +287,9 @@ body.is-cover #page-home.is-active { min-height: 100vh; }
 
 .card.is-center .row,
 .card.is-center .summary,
-.card.is-center .chips,
 .actions.is-center { justify-content: center; }
 
 .card.is-center .log { text-align: left; }
-
-/* 只有标题居中，内容（表单）保持左对齐 */
-.card.label-center > .card-label { text-align: center; }
 
 .two-col {
   display: grid;
@@ -344,8 +300,6 @@ body.is-cover #page-home.is-active { min-height: 100vh; }
 }
 
 .two-col > .card { margin-bottom: 0; }
-
-.two-col.tight { gap: 12px; margin-bottom: 0; }
 
 /* ============ 按钮 ============ */
 .btn {
@@ -415,8 +369,6 @@ body.is-cover #page-home.is-active { min-height: 100vh; }
 
 .drop-hint:empty { display: none; }
 
-.chips { display: flex; gap: 8px; flex-wrap: wrap; }
-
 .chip {
   font-family: inherit;
   font-size: 12.5px;
@@ -468,13 +420,6 @@ body.is-cover #page-home.is-active { min-height: 100vh; }
 .field select:focus {
   border-color: var(--primary);
   box-shadow: 0 0 0 3px rgba(232, 160, 190, 0.16);
-}
-
-.hint-line {
-  margin: 10px 0 0;
-  font-size: 11.5px;
-  color: var(--text-3);
-  line-height: 1.6;
 }
 
 /* 语种平铺：宽屏八列，窄屏四列，源/目标上下对齐。 */
@@ -599,14 +544,6 @@ body.is-cover #page-home.is-active { min-height: 100vh; }
 
 .muted { color: var(--text-3); font-size: 12.5px; }
 
-.footer {
-  margin-top: auto;
-  text-align: center;
-  font-size: 11.5px;
-  color: #b9b0b5;
-  padding: 18px 0 6px;
-}
-
 /* ============ 首页 ============ */
 .hero {
   text-align: center;
@@ -645,12 +582,6 @@ body.is-cover #page-home.is-active { min-height: 100vh; }
   width: auto;
   user-select: none;
   -webkit-user-drag: none;
-}
-
-.hero-note {
-  margin-top: 26px;
-  font-size: 12.5px;
-  color: var(--text-3);
 }
 
 /* 封面页的圆形闪电入口按钮 */
@@ -1156,10 +1087,6 @@ body.is-cover #page-home.is-active { min-height: 100vh; }
 
   .nav-item { width: auto; white-space: nowrap; padding: 7px 10px; font-size: 12.5px; }
 
-  .sidebar-foot { margin: 0 0 0 auto; flex-direction: row; gap: 6px; }
-
-  .ver { display: none; }
-
   .main-inner { padding: 16px 14px 30px; }
 
   .two-col { grid-template-columns: 1fr; }
@@ -1172,7 +1099,6 @@ body.is-cover #page-home.is-active { min-height: 100vh; }
 }
 
 @media (max-width: 480px) {
-  .sidebar-foot { display: none; }
   .hero-penguins img { height: clamp(56px, 14vw, 90px); }
 }
 
@@ -1297,5 +1223,3 @@ body.is-cover #page-home.is-active { min-height: 100vh; }
 .audit-sum.is-good { color: var(--ok); }
 
 .audit-card .pre-issue-card { background: #fdf9fb; box-shadow: none; margin-bottom: 10px; }
-
-.audit-actions { display: flex; justify-content: flex-end; margin-top: 4px; }
